@@ -1,0 +1,249 @@
+.prizesSection {
+  padding: 70px 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.sectionHeaderCenter {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 48px;
+}
+
+.sectionKicker {
+  display: block;
+  color: #c2410c;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.sectionTitle {
+  font-family: var(--font-cinzel), serif;
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  color: #78350f;
+  margin-bottom: 12px;
+}
+
+.sectionSubtitle {
+  font-size: 1.15rem;
+  color: #6b432a;
+  line-height: 1.5;
+}
+
+/* ─── HERO REWARD BANNER CARD ─── */
+.heroRewardCard {
+  background: radial-gradient(circle at top right, #fffefb 0%, #fdf4e2 100%);
+  border: 2px solid #d4af37;
+  border-radius: 24px;
+  padding: 44px 48px;
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 48px;
+  align-items: center;
+  box-shadow: 0 12px 35px rgba(120, 53, 15, 0.09);
+  margin-bottom: 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+.heroRewardCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #d97706, #991b1b, #d97706);
+}
+
+.heroRewardImgWrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.giftsHeroImg {
+  object-fit: contain;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 10px 20px rgba(120, 53, 15, 0.18));
+}
+
+.heroRewardText {
+  text-align: left;
+}
+
+.heroRewardBadge {
+  display: inline-block;
+  background: #991b1b;
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 4px 16px;
+  border-radius: 9999px;
+  margin-bottom: 12px;
+  border: 1px solid #fef3c7;
+}
+
+.heroRewardHeading {
+  font-family: var(--font-cinzel), serif;
+  font-size: 1.95rem;
+  color: #78350f;
+  margin-bottom: 12px;
+}
+
+.heroRewardDesc {
+  font-size: 1.08rem;
+  line-height: 1.6;
+  color: #431407;
+  margin-bottom: 20px;
+}
+
+.rewardBullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rewardBullets li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #5c1d0c;
+}
+
+.bulletIcon {
+  width: 20px;
+  height: 20px;
+  color: #991b1b;
+  flex-shrink: 0;
+}
+
+/* ─── 4-PILLAR RECOGNITION GRID ─── */
+.perksGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.perkCard {
+  background: #fffdf9;
+  border: 1.5px solid rgba(212, 175, 55, 0.6);
+  border-radius: 18px;
+  padding: 28px 22px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 6px 18px rgba(120, 53, 15, 0.05);
+  transition: all 0.3s ease;
+}
+
+.perkCard:hover {
+  transform: translateY(-4px);
+  border-color: #991b1b;
+  box-shadow: 0 10px 25px rgba(153, 27, 27, 0.12);
+}
+
+.perkHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.perkIconWrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.perkIcon {
+  width: 26px;
+  height: 26px;
+}
+
+.perkTag {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border: 1px solid;
+  padding: 2px 10px;
+  border-radius: 9999px;
+}
+
+.perkTitle {
+  font-family: var(--font-cinzel), serif;
+  font-size: 1.25rem;
+  color: #78350f;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.perkDesc {
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: #5c3822;
+}
+
+@media (max-width: 900px) {
+  .heroRewardCard {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 32px 24px;
+    gap: 28px;
+  }
+
+  .heroRewardText {
+    text-align: center;
+  }
+
+  .rewardBullets li {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 680px) {
+  .prizesSection {
+    padding: 40px 0;
+  }
+
+  .container {
+    padding: 0 16px;
+  }
+
+  .heroRewardCard {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    margin-bottom: 36px;
+  }
+
+  .heroRewardCard::before {
+    display: none;
+  }
+
+  .giftsHeroImg {
+    max-width: 260px;
+  }
+
+  .perkCard {
+    padding: 20px 16px;
+  }
+}

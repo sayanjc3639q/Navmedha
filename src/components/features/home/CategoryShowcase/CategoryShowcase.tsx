@@ -1,0 +1,53 @@
+import Image from "next/image";
+import Link from "next/link";
+import { CATEGORIES_CONFIG } from "@/config/categories";
+import styles from "./CategoryShowcase.module.css";
+
+export function CategoryShowcase() {
+  const categoriesList = Object.values(CATEGORIES_CONFIG);
+
+  return (
+    <section id="categories" className={styles.categoriesSection}>
+      <div className={styles.container}>
+        <div className={styles.sectionHeaderCenter}>
+          <span className={styles.sectionKicker}>✧ Showcase Your Talent ✧</span>
+          <h2 className={styles.sectionTitle}>Event Categories</h2>
+          <p className={styles.sectionSubtitle}>
+            Choose your creative medium and let your devotion & artistic expression shine.
+          </p>
+        </div>
+
+        <div className={styles.categoryList}>
+          {categoriesList.map((cat, index) => {
+            const isEven = index % 2 === 1;
+            return (
+              <div
+                key={cat.id}
+                className={`${styles.categoryRowItem} ${isEven ? styles.categoryRowReverse : ""}`}
+              >
+                <div className={styles.categoryIllustrationWrap}>
+                  <Image
+                    src={cat.icon}
+                    alt={cat.title}
+                    width={320}
+                    height={320}
+                    className={styles.categoryIllustration}
+                  />
+                </div>
+                <div className={styles.categoryBody}>
+                  <div className={styles.catBadge}>Category 0{index + 1}</div>
+                  <h3 className={styles.catTitle}>{cat.title}</h3>
+                  <span className={styles.catSub}>{cat.subtitle}</span>
+                  <p className={styles.catDesc}>{cat.description}</p>
+                  <Link href={`/submission/${cat.id}`} className={styles.catBtn}>
+                    Submit in this Category →
+                  </Link>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}

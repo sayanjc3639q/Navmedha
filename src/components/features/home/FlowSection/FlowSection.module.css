@@ -1,0 +1,175 @@
+.flowSection {
+  padding: 60px 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.sectionHeaderCenter {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 48px;
+}
+
+.sectionKicker {
+  display: block;
+  color: #c2410c;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.sectionTitle {
+  font-family: var(--font-cinzel), serif;
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  color: #78350f;
+  margin-bottom: 12px;
+}
+
+.sectionSubtitle {
+  font-size: 1.15rem;
+  color: #6b432a;
+  line-height: 1.5;
+}
+
+.timelineGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.timelineCard {
+  background: #fffdf9;
+  border: 1.5px solid #d4af37;
+  border-radius: 16px;
+  padding: 32px 20px 24px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 4px 14px rgba(120, 53, 15, 0.06);
+  transition: transform 0.3s ease;
+}
+
+.timelineCard:hover {
+  transform: translateY(-4px);
+  border-color: #991b1b;
+}
+
+.stepBadge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #991b1b;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: bold;
+  padding: 2px 14px;
+  border-radius: 20px;
+  border: 1px solid #fef3c7;
+}
+
+.stepIconContainer {
+  margin: 12px 0 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+}
+
+.stepLucideIcon {
+  width: 44px;
+  height: 44px;
+  stroke-width: 1.8;
+  filter: drop-shadow(0 2px 6px rgba(120, 53, 15, 0.15));
+}
+
+.timelineTitle {
+  font-size: 1.15rem;
+  color: #78350f;
+  margin-bottom: 8px;
+}
+
+.timelineDesc {
+  font-size: 0.9rem;
+  color: #6b432a;
+  line-height: 1.4;
+}
+
+/* ─── ORGANIZED BY NGO FOOTER BANNER ─── */
+.organizedByWrapper {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+}
+
+.organizedCard {
+  background: radial-gradient(circle at center, #fffefb 0%, #fcf3e3 100%);
+  border: 1.5px solid #d4af37;
+  border-radius: 18px;
+  padding: 24px 36px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  max-width: 750px;
+  box-shadow: 0 6px 20px rgba(120, 53, 15, 0.07);
+}
+
+.organizedLogoWrap {
+  flex-shrink: 0;
+  width: 85px;
+  height: 85px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eklavyaLogo {
+  object-fit: contain;
+  width: 100%;
+  height: auto;
+}
+
+.organizedText {
+  text-align: left;
+}
+
+.organizedKicker {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #991b1b;
+  margin-bottom: 4px;
+}
+
+.organizedTitle {
+  font-family: var(--font-cinzel), serif;
+  font-size: 1.4rem;
+  color: #78350f;
+  margin-bottom: 4px;
+}
+
+.organizedDesc {
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: #5c3822;
+}
+
+@media (max-width: 680px) {
+  .organizedCard {
+    flex-direction: column;
+    text-align: center;
+    padding: 24px 18px;
+  }
+
+  .organizedText {
+    text-align: center;
+  }
+}
