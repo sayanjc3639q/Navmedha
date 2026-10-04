@@ -6,6 +6,7 @@ import { AboutSection } from "@/components/features/home/AboutSection/AboutSecti
 import { CategoryShowcase } from "@/components/features/home/CategoryShowcase/CategoryShowcase";
 import { MascotSection } from "@/components/features/home/MascotSection/MascotSection";
 import { PrizesSection } from "@/components/features/home/PrizesSection/PrizesSection";
+import { LastYearGallery } from "@/components/features/home/LastYearGallery/LastYearGallery";
 import { FlowSection } from "@/components/features/home/FlowSection/FlowSection";
 import { RulesSection } from "@/components/features/home/RulesSection/RulesSection";
 
@@ -19,6 +20,8 @@ export default function Home() {
       <CategoryShowcase />
       <PatternSeparator />
       <PrizesSection />
+      <LastYearGallery />
+      <PatternSeparator />
       <MascotSection />
       <FlowSection />
       <RulesSection />

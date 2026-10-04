@@ -23,6 +23,7 @@ export function Navbar() {
           <Link href="/#about" className={styles.navLink}>About</Link>
           <Link href="/#categories" className={styles.navLink}>Categories</Link>
           <Link href="/#prizes" className={styles.navLink}>Prizes & MAR</Link>
+          <Link href="/#gallery" className={styles.navLink}>Memories</Link>
           <Link href="/#mascots" className={styles.navLink}>Theme</Link>
           <Link href="/#rules" className={styles.navLink}>Rules</Link>
           <Link href="/#flow" className={styles.navLink}>Event Flow</Link>
