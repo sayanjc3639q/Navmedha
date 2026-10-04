@@ -87,17 +87,17 @@ export function LastYearGallery() {
               const absDiff = Math.abs(diff);
 
               // Calculate fan transform (rotation, translateX, translateY, zIndex)
-              const rot = diff * 7.5; // degrees tilt
-              const transX = diff * 64; // horizontal spread
-              let transY = absDiff * 16 - (isActive ? 35 : 0); // lift top card
-              let customScale = isActive ? 1.05 : Math.max(0.78, 1 - absDiff * 0.07);
+              const rot = diff * 8; // degrees tilt
+              const transX = diff * 85; // wider horizontal spread so photos on sides are clearly visible
+              let transY = absDiff * 14 - (isActive ? 38 : 0); // lift top card
+              let customScale = isActive ? 1.05 : Math.max(0.82, 1 - absDiff * 0.05);
               let customZIndex = 50 - absDiff;
-              let customOpacity = absDiff > 3 ? 0 : Math.max(0.35, 1 - absDiff * 0.2);
+              let customOpacity = absDiff > 3 ? 0 : Math.max(0.65, 1 - absDiff * 0.12);
 
               // Realistic Poker Pull-Out Animation when transitioning
               if (isActive && isPullingOut) {
-                transY = -90; // Pull high out of the hand
-                customScale = 1.1;
+                transY = -95; // Pull high out of the hand
+                customScale = 1.12;
                 customZIndex = 60;
               }
 
@@ -112,7 +112,7 @@ export function LastYearGallery() {
                     transform: `translateX(${transX}px) translateY(${transY}px) rotate(${rot}deg) scale(${customScale})`,
                     zIndex: customZIndex,
                     opacity: customOpacity,
-                    pointerEvents: absDiff > 3 ? "none" : "auto",
+                    cursor: "pointer",
                   }}
                 >
                   {/* Photo inside the decorative cutout frame */}
