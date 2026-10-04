@@ -18,46 +18,65 @@ const GALLERY_ITEMS = [
 export function LastYearGallery() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPullingOut, setIsPullingOut] = useState(false);
-  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const touchStartXRef = useRef<number | null>(null);
 
-  // Auto-scroll with realistic poker pull-out motion
+  // Helper to trigger card transition
+  const goToCard = (nextIndex: number) => {
+    setIsPullingOut(true);
+    setTimeout(() => {
+      setActiveIndex(nextIndex);
+      setIsPullingOut(false);
+    }, 280);
+  };
+
+  const nextCard = () => {
+    goToCard((activeIndex + 1) % GALLERY_ITEMS.length);
+  };
+
+  const prevCard = () => {
+    goToCard((activeIndex - 1 + GALLERY_ITEMS.length) % GALLERY_ITEMS.length);
+  };
+
+  // Robust Auto-scroll timer that resets cleanly on user interaction
   useEffect(() => {
-    const timer = setInterval(() => {
-      // Step 1: pull out top card
-      setIsPullingOut(true);
+    if (timerRef.current) clearInterval(timerRef.current);
 
-      // Step 2: advance card & slide to back
+    timerRef.current = setInterval(() => {
+      setIsPullingOut(true);
       setTimeout(() => {
         setActiveIndex((prev) => (prev + 1) % GALLERY_ITEMS.length);
         setIsPullingOut(false);
-      }, 400);
+      }, 280);
     }, 3200);
 
-    return () => clearInterval(timer);
-  }, []);
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [activeIndex]);
 
-  // Manual Touch / Drag Swipe Support for Mobile
+  // Touch Swipe for Mobile
   const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStartX(e.touches[0].clientX);
+    touchStartXRef.current = e.touches[0].clientX;
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX === null) return;
-    const touchEndX = e.changedTouches[0].clientX;
-    const diff = touchStartX - touchEndX;
-
-    if (diff > 45) {
-      // Swipe left -> next card
-      setActiveIndex((prev) => (prev + 1) % GALLERY_ITEMS.length);
-    } else if (diff < -45) {
-      // Swipe right -> prev card
-      setActiveIndex((prev) => (prev - 1 + GALLERY_ITEMS.length) % GALLERY_ITEMS.length);
+    if (touchStartXRef.current === null) return;
+    const diff = touchStartXRef.current - e.changedTouches[0].clientX;
+    if (diff > 40) {
+      nextCard();
+    } else if (diff < -40) {
+      prevCard();
     }
-    setTouchStartX(null);
+    touchStartXRef.current = null;
   };
 
   const handleCardClick = (index: number) => {
-    setActiveIndex(index);
+    if (index === activeIndex) {
+      nextCard(); // Clicking center card pulls next
+    } else {
+      goToCard(index);
+    }
   };
 
   return (
