@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight, Layers, Sparkles } from "lucide-react";
 import styles from "./LastYearGallery.module.css";
 
 const GALLERY_ITEMS = [
@@ -18,14 +17,21 @@ const GALLERY_ITEMS = [
 
 export function LastYearGallery() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handleNext = () => {
-    setActiveIndex((prev) => (prev + 1) % GALLERY_ITEMS.length);
-  };
+  // Auto-swipe every 3.5 seconds
+  useEffect(() => {
+    if (isPaused) return;
 
-  const handlePrev = () => {
-    setActiveIndex((prev) => (prev - 1 + GALLERY_ITEMS.length) % GALLERY_ITEMS.length);
-  };
+    autoPlayRef.current = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % GALLERY_ITEMS.length);
+    }, 3500);
+
+    return () => {
+      if (autoPlayRef.current) clearInterval(autoPlayRef.current);
+    };
+  }, [isPaused]);
 
   const handleCardClick = (index: number) => {
     setActiveIndex(index);
@@ -43,7 +49,13 @@ export function LastYearGallery() {
         </div>
 
         {/* Poker Card Deck Container */}
-        <div className={styles.deckWrapper}>
+        <div
+          className={styles.deckWrapper}
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          onTouchStart={() => setIsPaused(true)}
+          onTouchEnd={() => setIsPaused(false)}
+        >
           <div className={styles.pokerDeck}>
             {GALLERY_ITEMS.map((item, idx) => {
               // Calculate relative offset from active card
@@ -109,44 +121,25 @@ export function LastYearGallery() {
           </div>
         </div>
 
-        {/* Current Active Card Meta & Navigation */}
+        {/* Current Active Card Meta & Thumbnail Dots */}
         <div className={styles.activeCardInfo}>
           <h3 className={styles.currentTitle}>{GALLERY_ITEMS[activeIndex].title}</h3>
           <p className={styles.currentCaption}>{GALLERY_ITEMS[activeIndex].caption}</p>
 
-          <div className={styles.navControls}>
-            <button
-              onClick={handlePrev}
-              className={styles.navBtn}
-              aria-label="Previous framed photo"
-            >
-              <ChevronLeft className={styles.btnIcon} />
-              <span>Pull Previous</span>
-            </button>
-
-            {/* Thumbnail dots / quick selector */}
-            <div className={styles.dotDeck}>
-              {GALLERY_ITEMS.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setActiveIndex(i)}
-                  className={`${styles.dot} ${i === activeIndex ? styles.activeDot : ""}`}
-                  aria-label={`Select frame ${i + 1}`}
-                />
-              ))}
-            </div>
-
-            <button
-              onClick={handleNext}
-              className={styles.navBtn}
-              aria-label="Next framed photo"
-            >
-              <span>Pull Next</span>
-              <ChevronRight className={styles.btnIcon} />
-            </button>
+          {/* Quick selector dots */}
+          <div className={styles.dotDeck}>
+            {GALLERY_ITEMS.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveIndex(i)}
+                className={`${styles.dot} ${i === activeIndex ? styles.activeDot : ""}`}
+                aria-label={`Select frame ${i + 1}`}
+              />
+            ))}
           </div>
         </div>
       </div>
     </section>
   );
 }
+
