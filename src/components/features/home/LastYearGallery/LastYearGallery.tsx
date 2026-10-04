@@ -17,15 +17,44 @@ const GALLERY_ITEMS = [
 
 export function LastYearGallery() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isPullingOut, setIsPullingOut] = useState(false);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
 
-  // Auto-scroll every 3 seconds
+  // Auto-scroll with realistic poker pull-out motion
   useEffect(() => {
     const timer = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % GALLERY_ITEMS.length);
-    }, 3000);
+      // Step 1: pull out top card
+      setIsPullingOut(true);
+
+      // Step 2: advance card & slide to back
+      setTimeout(() => {
+        setActiveIndex((prev) => (prev + 1) % GALLERY_ITEMS.length);
+        setIsPullingOut(false);
+      }, 400);
+    }, 3200);
 
     return () => clearInterval(timer);
   }, []);
+
+  // Manual Touch / Drag Swipe Support for Mobile
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX - touchEndX;
+
+    if (diff > 45) {
+      // Swipe left -> next card
+      setActiveIndex((prev) => (prev + 1) % GALLERY_ITEMS.length);
+    } else if (diff < -45) {
+      // Swipe right -> prev card
+      setActiveIndex((prev) => (prev - 1 + GALLERY_ITEMS.length) % GALLERY_ITEMS.length);
+    }
+    setTouchStartX(null);
+  };
 
   const handleCardClick = (index: number) => {
     setActiveIndex(index);
@@ -42,8 +71,12 @@ export function LastYearGallery() {
           </p>
         </div>
 
-        {/* Poker Card Deck Container */}
-        <div className={styles.deckWrapper}>
+        {/* Poker Card Deck Container with Mobile Touch Swipe */}
+        <div
+          className={styles.deckWrapper}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
           <div className={styles.pokerDeck}>
             {GALLERY_ITEMS.map((item, idx) => {
               const total = GALLERY_ITEMS.length;
@@ -54,24 +87,32 @@ export function LastYearGallery() {
               const absDiff = Math.abs(diff);
 
               // Calculate fan transform (rotation, translateX, translateY, zIndex)
-              const rot = diff * 7; // degrees tilt
-              const transX = diff * 62; // horizontal spread
-              const transY = absDiff * 16 - (isActive ? 32 : 0); // lift top card
-              const zIndex = 50 - absDiff;
-              const scale = isActive ? 1.05 : Math.max(0.78, 1 - absDiff * 0.07);
-              const opacity = absDiff > 3 ? 0 : Math.max(0.35, 1 - absDiff * 0.2);
-              const pointerEvents = absDiff > 3 ? "none" : "auto";
+              const rot = diff * 7.5; // degrees tilt
+              const transX = diff * 64; // horizontal spread
+              let transY = absDiff * 16 - (isActive ? 35 : 0); // lift top card
+              let customScale = isActive ? 1.05 : Math.max(0.78, 1 - absDiff * 0.07);
+              let customZIndex = 50 - absDiff;
+              let customOpacity = absDiff > 3 ? 0 : Math.max(0.35, 1 - absDiff * 0.2);
+
+              // Realistic Poker Pull-Out Animation when transitioning
+              if (isActive && isPullingOut) {
+                transY = -90; // Pull high out of the hand
+                customScale = 1.1;
+                customZIndex = 60;
+              }
 
               return (
                 <div
                   key={item.id}
                   onClick={() => handleCardClick(idx)}
-                  className={`${styles.framedCard} ${isActive ? styles.activeCard : ""}`}
+                  className={`${styles.framedCard} ${isActive ? styles.activeCard : ""} ${
+                    isActive && isPullingOut ? styles.cardPullingOut : ""
+                  }`}
                   style={{
-                    transform: `translateX(${transX}px) translateY(${transY}px) rotate(${rot}deg) scale(${scale})`,
-                    zIndex,
-                    opacity,
-                    pointerEvents: pointerEvents as any,
+                    transform: `translateX(${transX}px) translateY(${transY}px) rotate(${rot}deg) scale(${customScale})`,
+                    zIndex: customZIndex,
+                    opacity: customOpacity,
+                    pointerEvents: absDiff > 3 ? "none" : "auto",
                   }}
                 >
                   {/* Photo inside the decorative cutout frame */}
@@ -129,4 +170,5 @@ export function LastYearGallery() {
     </section>
   );
 }
+
 
