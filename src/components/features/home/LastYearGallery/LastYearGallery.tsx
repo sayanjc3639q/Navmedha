@@ -17,21 +17,15 @@ const GALLERY_ITEMS = [
 
 export function LastYearGallery() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Auto-swipe every 3.5 seconds
+  // Auto-scroll every 3 seconds
   useEffect(() => {
-    if (isPaused) return;
-
-    autoPlayRef.current = setInterval(() => {
+    const timer = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % GALLERY_ITEMS.length);
-    }, 3500);
+    }, 3000);
 
-    return () => {
-      if (autoPlayRef.current) clearInterval(autoPlayRef.current);
-    };
-  }, [isPaused]);
+    return () => clearInterval(timer);
+  }, []);
 
   const handleCardClick = (index: number) => {
     setActiveIndex(index);
@@ -49,32 +43,24 @@ export function LastYearGallery() {
         </div>
 
         {/* Poker Card Deck Container */}
-        <div
-          className={styles.deckWrapper}
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-          onTouchStart={() => setIsPaused(true)}
-          onTouchEnd={() => setIsPaused(false)}
-        >
+        <div className={styles.deckWrapper}>
           <div className={styles.pokerDeck}>
             {GALLERY_ITEMS.map((item, idx) => {
-              // Calculate relative offset from active card
               const total = GALLERY_ITEMS.length;
               let diff = (idx - activeIndex + total) % total;
-              if (diff > total / 2) diff -= total; // allow negative wrapping
+              if (diff > total / 2) diff -= total; // allow negative wrapping for symmetrical fan
 
               const isActive = diff === 0;
-              const isVisible = Math.abs(diff) <= 3; // Show top 5-7 cards in fan
-
-              if (!isVisible) return null;
+              const absDiff = Math.abs(diff);
 
               // Calculate fan transform (rotation, translateX, translateY, zIndex)
-              const rot = diff * 7.5; // degrees tilt
-              const transX = diff * 65; // horizontal spread
-              const transY = Math.abs(diff) * 18 - (isActive ? 35 : 0); // lift top card
-              const zIndex = 50 - Math.abs(diff);
-              const scale = isActive ? 1.05 : Math.max(0.85, 1 - Math.abs(diff) * 0.06);
-              const opacity = Math.max(0.4, 1 - Math.abs(diff) * 0.18);
+              const rot = diff * 7; // degrees tilt
+              const transX = diff * 62; // horizontal spread
+              const transY = absDiff * 16 - (isActive ? 32 : 0); // lift top card
+              const zIndex = 50 - absDiff;
+              const scale = isActive ? 1.05 : Math.max(0.78, 1 - absDiff * 0.07);
+              const opacity = absDiff > 3 ? 0 : Math.max(0.35, 1 - absDiff * 0.2);
+              const pointerEvents = absDiff > 3 ? "none" : "auto";
 
               return (
                 <div
@@ -85,6 +71,7 @@ export function LastYearGallery() {
                     transform: `translateX(${transX}px) translateY(${transY}px) rotate(${rot}deg) scale(${scale})`,
                     zIndex,
                     opacity,
+                    pointerEvents: pointerEvents as any,
                   }}
                 >
                   {/* Photo inside the decorative cutout frame */}
